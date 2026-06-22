@@ -11,10 +11,15 @@ const app = express();
 
 app.use(express.json({limit:'16kb'}));
 
-app.post('/upload',upload.array('documents',2),(_req:Request,res:Response)=>{
-    const files = _req.files;
-
-    console.log(files);
+app.post('/upload',upload.array('documents',2),(req:Request,res:Response)=>{
+    const files = req.files as Express.Multer.File[];
+    
+    files.forEach((file:any)=>{
+        const buffer = file.buffer;
+        const pdfDocument = mupdf.Document.openDocument(buffer);
+        const pageCount = pdfDocument.countPages();
+        console.log(`Uploaded file: ${file.originalname}, Pages: ${pageCount}`);
+    });
 });
 
 
