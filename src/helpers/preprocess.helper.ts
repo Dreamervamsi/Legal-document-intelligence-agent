@@ -34,7 +34,7 @@ async function scanForPromptInjections(text: string): Promise<boolean> {
     return true;
   } catch (error) {
     console.error("Failed to run EnKrypt guardrails:", error);
-    return false; 
+    throw new Error("Failed to run EnKrypt guardrails.");
   }
 }
 
