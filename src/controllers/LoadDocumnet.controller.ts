@@ -1,6 +1,8 @@
 import {type Request, type Response} from 'express';
 import scanForPromptInjections from '../helpers/preprocess.helper.js';
 import extractContentFromFiles from '../helpers/extractContent.helper.js';
+import qdrantClient from '../config/qdrant.config.js';
+import generateEmbeddings from '../helpers/createEmbeddings.helper.js';
 
 async function loadDocuments(req:Request,res:Response){
     try {
@@ -17,6 +19,15 @@ async function loadDocuments(req:Request,res:Response){
         if (!scannerRes) {
             return res.status(400).send('Prompt injection detected in the uploaded documents.');
         }
+
+        const points = await Promise.all(texts.map(async (t: any, index: number) =>{
+            await generateEmbeddings(t.text);
+        }));
+
+        // await qdrantClient.upsert({
+        //     indexName: 'qdrantCollection',
+        //     points: points
+        // });
 
         return res.send(texts);
 

@@ -1,11 +1,12 @@
 import { embed } from 'ai';
-import { ModelRouterEmbeddingModel } from '@mastra/core/llm';
+import { cohere } from '@ai-sdk/cohere';
 
-async function generateEmbeddings(text: string) {
+async function generateEmbeddings(text: string) :Promise<number[]> {
   const { embedding } = await embed({
+    model: cohere.embedding('embed-english-v3.0'),
     value: text,
-    model: new ModelRouterEmbeddingModel('openai/text-embedding-3-small'),
   });
-
   return embedding;
 }
+
+export default generateEmbeddings;
