@@ -16,9 +16,20 @@ app.post('/upload',upload.array('documents',2),(req:Request,res:Response)=>{
     
     files.forEach((file:any)=>{
         const buffer = file.buffer;
-        const pdfDocument = mupdf.Document.openDocument(buffer);
-        const pageCount = pdfDocument.countPages();
-        console.log(`Uploaded file: ${file.originalname}, Pages: ${pageCount}`);
+        const doc = mupdf.Document.openDocument(buffer);
+        const totalPages = doc.countPages();
+        console.log(`Uploaded file: ${file.originalname}, Pages: ${totalPages}`);
+
+        const texts = [];
+        for(let i=0;i<totalPages;i++){
+            const page = doc.loadPage(i);
+            const text = page.toStructuredText().asText();
+            texts.push({
+                page:i+1,
+                text:text
+            });
+        }
+        res.send(texts);
     });
 });
 
