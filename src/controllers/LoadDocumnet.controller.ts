@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import {type Request, type Response} from 'express';
 import scanForPromptInjections from '../helpers/preprocess.helper.js';
 import extractContentFromFiles from '../helpers/extractContent.helper.js';
@@ -21,15 +22,20 @@ async function loadDocuments(req:Request,res:Response){
         }
 
         const points = await Promise.all(texts.map(async (t: any, index: number) =>{
-            await generateEmbeddings(t.text);
+            return await generateEmbeddings(t.text);
+        }));
+        
+        const metadata = texts.map((t: any) => ({
+            text: t.text
         }));
 
-        // await qdrantClient.upsert({
-        //     indexName: 'qdrantCollection',
-        //     points: points
-        // });
+        await qdrantClient.upsert({
+            indexName: 'qdrantCollection',
+            vectors: points,
+            metadata:metadata
+        });
 
-        return res.send(texts);
+        return res.send("Documents loaded and processed successfully.");
 
     } catch(error:any) {
         console.error('Error occurred while processing the request:', error.message);
