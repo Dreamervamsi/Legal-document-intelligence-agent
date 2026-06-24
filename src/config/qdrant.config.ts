@@ -10,7 +10,7 @@ const qdrantClient = new QdrantVector({
 
 await qdrantClient.createIndex({
     indexName:'qdrantCollection',
-    dimension:768,
+    dimension:384,
     metric:'cosine'
 });
 
