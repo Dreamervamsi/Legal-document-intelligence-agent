@@ -1,10 +1,11 @@
-import crypto from 'crypto';
 import {type Request, type Response} from 'express';
 import scanForPromptInjections from '../helpers/preprocess.helper.js';
 import extractContentFromFiles from '../helpers/extractContent.helper.js';
-import qdrantClient from '../config/qdrant.config.js';
+import createCollection from '../config/qdrant.config.js';
 import generateEmbeddings from '../helpers/createEmbeddings.helper.js';
 
+const qdrantClient = await createCollection();
+        
 async function loadDocuments(req:Request,res:Response){
     try {
         const files = req.files as Express.Multer.File[];
@@ -28,7 +29,7 @@ async function loadDocuments(req:Request,res:Response){
         const metadata = texts.map((t: any) => ({
             text: t.text
         }));
-
+        
         await qdrantClient.upsert({
             indexName: 'qdrantCollection',
             vectors: points,
