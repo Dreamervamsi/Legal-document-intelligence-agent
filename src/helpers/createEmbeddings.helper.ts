@@ -1,14 +1,14 @@
 import 'dotenv/config';
 import { HfInference } from '@huggingface/inference';
 
-const hf = new HfInference(process.env.HF_API_TOKEN);
+const hf = new HfInference(process.env.HF_API_KEY || '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');
 
 const EMBEDDING_MODEL = 'sentence-transformers/all-MiniLM-L6-v2';
 
 async function generateEmbeddings(text: string): Promise<number[]> {
-  if (!process.env.HF_API_TOKEN) {
+  if (!process.env.HF_API_KEY) {
     throw new Error(
-      'HF_API_TOKEN environment variable is not set. Please add it to your .env file.'
+      'HF_API_KEY environment variable is not set. Please add it to your .env file.'
     );
   }
 
