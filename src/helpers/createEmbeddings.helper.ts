@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { HfInference } from '@huggingface/inference';
 
-const hf = new HfInference(process.env.HF_API_KEY || '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');
+const hf = new HfInference(process.env.HF_API_KEY);
 
 const EMBEDDING_MODEL = 'sentence-transformers/all-MiniLM-L6-v2';
 
