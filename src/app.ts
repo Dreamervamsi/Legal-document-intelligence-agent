@@ -1,4 +1,4 @@
-import express,{type Request, type Response} from 'express';
+import express from 'express';
 import 'dotenv/config';
 import documentRouter from './routes/LoadDocument.route.js';
 import riskAnalysisRouter from './routes/RiskAnalysis.route.js';
