@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "tsx src/server.ts"
+    "start": "tsx src/server.ts",
+    "test:risk": "tsx scripts/test-risk-analysis.ts"
   },
   "type": "module",
   "devDependencies": {
